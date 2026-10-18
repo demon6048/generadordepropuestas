@@ -256,7 +256,7 @@
                         <div class="w-64 text-center flex flex-col items-center">
                             <img src="https://i.imgur.com/R2Wi8kr.png" alt="Firma Autorizada" class="h-24 object-contain z-10 -mb-4 drop-shadow-md">
                             <div class="border-t-2 border-gray-800 w-full pt-2 font-bold text-[13px] uppercase">José Leonaldo Vizcarra Ramirez</div>
-                            <div class="text-[11px] text-gray-600 font-medium">DNI: 44865369<br>Gerente General - KGB DISTRIBUIDORES</div>
+                            <div class="text-[11px] text-gray-600 font-medium">DNI: 44865369<br>Técnico Especialista - KGB DISTRIBUIDORES</div>
                         </div>
                     </div>
 
@@ -265,8 +265,8 @@
         </section>
 
         <!-- Modal Historial -->
-        <div id="historyModal" class="hidden fixed inset-0 bg-brand-dark/70 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-            <div class="bg-white w-full max-w-4xl rounded-2xl shadow-2xl flex flex-col max-h-[85vh] overflow-hidden">
+        <div id="historyModal" class="hidden fixed inset-0 bg-brand-dark/70 backdrop-blur-sm z-50 flex items-center justify-center p-4 z-50">
+            <div class="bg-white w-full max-w-5xl rounded-2xl shadow-2xl flex flex-col max-h-[85vh] overflow-hidden">
                 <div class="px-6 py-4 border-b border-slate-200 flex justify-between items-center bg-slate-50">
                     <h2 class="text-lg font-black text-brand-dark flex items-center gap-2 uppercase tracking-wide">
                         <i data-lucide="folder-open" class="w-5 h-5 text-brand-tech"></i> Archivo de Propuestas
@@ -275,10 +275,23 @@
                         <i data-lucide="x" class="w-6 h-6"></i>
                     </button>
                 </div>
-                <div class="flex-1 overflow-y-auto p-6 bg-slate-50 flex items-center justify-center">
-                    <div class="text-center">
-                        <i data-lucide="database" class="w-12 h-12 text-slate-300 mx-auto mb-3"></i>
-                        <p class="text-slate-500 font-medium">Historial conectado a Base de Datos.<br>Aparecerá aquí una vez conectado al nuevo Webhook.</p>
+                <div class="flex-1 overflow-y-auto p-6 bg-slate-50">
+                    <div class="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm">
+                        <table class="w-full text-left">
+                            <thead class="bg-slate-100 text-slate-500 text-[10px] uppercase font-black tracking-wider border-b border-slate-200">
+                                <tr>
+                                    <th class="py-3 px-4">Fecha</th>
+                                    <th class="py-3 px-4">N°</th>
+                                    <th class="py-3 px-4">Cliente / Empresa</th>
+                                    <th class="py-3 px-4">Título</th>
+                                    <th class="py-3 px-4 text-center">Estado</th>
+                                    <th class="py-3 px-4 text-center">Acción</th>
+                                </tr>
+                            </thead>
+                            <tbody id="dbTableBody" class="text-sm divide-y divide-slate-50">
+                                <!-- Filas dinámicas -->
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
@@ -420,18 +433,141 @@
             window.open(waUrl, '_blank');
         };
 
-        window.openHistory = () => document.getElementById('historyModal').classList.remove('hidden');
+        window.WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbzrve37_iJUAkYvQqVYOWYPmfopsweb4iMgbmdx7xnDf5bg47SqQUwU4DyaATfywMEMDw/exec";
+        window.propuestasList = JSON.parse(localStorage.getItem('propuestasList_kgb')) || [];
+
+        window.renderHistoryTable = () => {
+            const tbody = document.getElementById('dbTableBody');
+            if(!tbody) return;
+            tbody.innerHTML = '';
+            
+            if (window.propuestasList.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6" class="text-center py-8 text-slate-400 font-medium">Aún no hay propuestas guardadas.</td></tr>';
+                return;
+            }
+
+            window.propuestasList.forEach(prop => {
+                let statusColors = prop.status === 'Borrador' ? "bg-slate-50 text-slate-600 border border-slate-200" : 
+                                   prop.status === 'Enviado' ? "bg-blue-50 text-blue-600 border border-blue-200" : 
+                                   "bg-emerald-50 text-emerald-600 border border-emerald-200";
+                
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td class="py-3 px-4 text-slate-500 font-semibold">${prop.date}</td>
+                    <td class="py-3 px-4 font-black text-brand-corp">PR-${prop.propNumber}</td>
+                    <td class="py-3 px-4 font-semibold text-slate-800 truncate max-w-[150px]">${prop.clientName || 'Sin nombre'}</td>
+                    <td class="py-3 px-4 text-slate-600 truncate max-w-[200px] text-xs">${prop.title || 'Sin título'}</td>
+                    <td class="py-3 px-4 text-center">
+                        <span class="text-[10px] font-bold px-2.5 py-1 rounded-md shadow-sm ${statusColors}">${prop.status}</span>
+                    </td>
+                    <td class="py-3 px-4 text-center whitespace-nowrap">
+                        <button onclick="window.loadPropuesta('${prop.id}')" title="Editar / Cargar" class="text-blue-500 hover:text-blue-700 hover:bg-blue-50 p-1.5 rounded transition-colors"><i data-lucide="edit" class="w-4 h-4"></i></button>
+                        <button onclick="window.deletePropuesta('${prop.id}')" title="Eliminar Local" class="text-slate-400 hover:text-red-500 hover:bg-red-50 p-1.5 rounded transition-colors"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+            lucide.createIcons();
+        };
+
+        window.openHistory = () => {
+            window.renderHistoryTable();
+            document.getElementById('historyModal').classList.remove('hidden');
+        };
         window.closeHistory = () => document.getElementById('historyModal').classList.add('hidden');
         
-        window.savePropuesta = (btn) => {
+        window.loadPropuesta = (id) => {
+            const prop = window.propuestasList.find(p => p.id === id);
+            if(!prop) return;
+            document.getElementById('f_propNumber').value = prop.propNumber;
+            document.getElementById('f_date').value = prop.date;
+            document.getElementById('f_status').value = prop.status;
+            document.getElementById('f_clientName').value = prop.clientName;
+            document.getElementById('f_attention').value = prop.attention;
+            document.getElementById('f_clientPhone').value = prop.clientPhone;
+            document.getElementById('f_propTitle').value = prop.title;
+            document.getElementById('f_propBody').value = prop.body;
+            document.getElementById('f_propCost').value = prop.cost;
+            window.updatePreview();
+            window.closeHistory();
+        };
+
+        window.deletePropuesta = (id) => {
+            if(confirm("¿Eliminar propuesta del historial local?")) {
+                window.propuestasList = window.propuestasList.filter(p => p.id !== id);
+                localStorage.setItem('propuestasList_kgb', JSON.stringify(window.propuestasList));
+                window.renderHistoryTable();
+            }
+        };
+
+        window.savePropuesta = async (btn) => {
+            if (btn.disabled) return;
             const originalText = btn.innerHTML;
-            btn.innerHTML = '<i data-lucide="check" class="w-4 h-4"></i> Guardado Local';
-            lucide.createIcons();
-            setTimeout(() => {
-                btn.innerHTML = originalText;
+            
+            try {
+                btn.innerHTML = '<i data-lucide="loader-2" class="w-4 h-4 animate-spin"></i> Guardando...';
+                btn.disabled = true;
+                btn.classList.add('opacity-75', 'cursor-wait');
                 lucide.createIcons();
-            }, 2000);
-            // Aquí irá la lógica del Webhook cuando decidas unificar las bases de datos.
+
+                const dataObj = {
+                    id: "PR_" + new Date().getTime(),
+                    propNumber: document.getElementById('f_propNumber').value || '',
+                    date: document.getElementById('f_date').value || '',
+                    status: document.getElementById('f_status').value || '',
+                    clientName: document.getElementById('f_clientName').value || '',
+                    attention: document.getElementById('f_attention').value || '',
+                    clientPhone: document.getElementById('f_clientPhone').value || '',
+                    title: document.getElementById('f_propTitle').value || '',
+                    body: document.getElementById('f_propBody').value || '',
+                    cost: document.getElementById('f_propCost').value || ''
+                };
+
+                // Enviar a tu nuevo Webhook (Google Sheets)
+                const response = await fetch(window.WEBHOOK_URL, {
+                    method: 'POST',
+                    body: JSON.stringify({ action: "save_propuesta", data: dataObj })
+                });
+
+                if (response.ok) {
+                    // Guardar Localmente para visualizar rápido en Historial
+                    const index = window.propuestasList.findIndex(p => p.propNumber === dataObj.propNumber);
+                    if (index > -1) {
+                        dataObj.id = window.propuestasList[index].id;
+                        window.propuestasList[index] = dataObj;
+                    } else {
+                        window.propuestasList.unshift(dataObj);
+                    }
+                    localStorage.setItem('propuestasList_kgb', JSON.stringify(window.propuestasList));
+                    
+                    btn.innerHTML = '<i data-lucide="check" class="w-4 h-4"></i> ¡Guardado!';
+                    
+                    // Modificar el indicador de la nube a exitoso
+                    const indicator = document.getElementById('cloudSyncIndicator');
+                    indicator.innerHTML = `<i data-lucide="check-circle" class="w-3 h-3 text-emerald-500"></i> <span class="text-[10px] text-emerald-600 font-bold uppercase tracking-wider">Sincronizado a Nube</span>`;
+                } else {
+                    throw new Error("Error en la respuesta");
+                }
+            } catch (error) {
+                console.error(error);
+                btn.innerHTML = '<i data-lucide="x" class="w-4 h-4"></i> Error';
+                const indicator = document.getElementById('cloudSyncIndicator');
+                indicator.innerHTML = `<i data-lucide="cloud-off" class="w-3 h-3 text-red-500"></i> <span class="text-[10px] text-red-600 font-bold uppercase tracking-wider">Error de Red</span>`;
+                alert("Hubo un error al guardar en Google Sheets, revisa tu conexión.");
+            } finally {
+                lucide.createIcons();
+                setTimeout(() => {
+                    btn.innerHTML = originalText;
+                    btn.disabled = false;
+                    btn.classList.remove('opacity-75', 'cursor-wait');
+                    lucide.createIcons();
+                    
+                    const indicator = document.getElementById('cloudSyncIndicator');
+                    if(indicator.innerText.includes('Sincronizado')) {
+                        indicator.innerHTML = `<div class="w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.8)]"></div> <span class="text-[10px] text-gray-500 font-bold uppercase tracking-wider">Módulo Activo</span>`;
+                    }
+                }, 2500);
+            }
         };
 
         window.onload = window.initDefaults;
