@@ -40,12 +40,25 @@
         .a4-preview {
             width: 210mm; min-width: 210mm; max-width: 210mm;
             min-height: 297mm; height: auto;
-            background: transparent; 
+            background: white; 
             box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
             margin: 0; padding: 16mm; 
             position: relative; z-index: 0;
             flex-shrink: 0; 
             border-radius: 4px;
+        }
+
+        .a4-preview::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-image: url('https://i.imgur.com/fObiYn6.png');
+            background-size: 210mm 297mm;
+            background-repeat: repeat-y;
+            background-position: top left;
+            opacity: 0.3;
+            z-index: -1;
+            border-radius: inherit;
         }
 
         .hide-scrollbar::-webkit-scrollbar { width: 6px; }
@@ -184,9 +197,10 @@
             
             <div id="preview-scaler" class="origin-top flex justify-center transition-transform duration-200 z-10 w-full" style="width: 210mm;">
                 
-                <div id="proforma-pdf-wrapper" class="a4-preview bg-white flex flex-col transition-all duration-300">
-                    <img id="p_bgImage" src="https://i.imgur.com/fObiYn6.png" alt="Fondo" class="absolute inset-0 w-full h-full object-cover -z-10 opacity-30">
+                <!-- Contenedor A4 -->
+                <div id="proforma-pdf-wrapper" class="a4-preview flex flex-col transition-all duration-300">
                     
+                    <!-- Header Oficial -->
                     <div class="flex justify-between items-start mb-6 pb-4 border-b-2 border-brand-corp/30 relative z-10">
                         <div class="flex items-center gap-6 flex-1 min-w-0">
                             <div class="w-48 bg-transparent flex items-center justify-center shrink-0">
@@ -230,18 +244,21 @@
                         <h3 id="p_propTitle" class="text-xl font-black text-brand-corp uppercase tracking-wide border-b-2 border-brand-tech inline-block pb-1">TÍTULO DE LA PROPUESTA</h3>
                     </div>
 
+                    <!-- Cuerpo (Expandible) -->
                     <div class="flex-1 relative z-10 mb-8">
-                        <div id="p_propBody" class="text-[13px] text-gray-800 leading-relaxed text-justify whitespace-pre-wrap font-medium">
-                            [El contenido de tu propuesta aparecerá aquí]
+                        <div id="p_propBody" class="text-[13px] text-gray-800 leading-relaxed text-justify font-medium">
+                            <p>[El contenido de tu propuesta aparecerá aquí]</p>
                         </div>
                         
-                        <div id="p_costContainer" class="mt-8 hidden bg-slate-50 border border-slate-200 p-4 rounded-xl text-center">
+                        <!-- Costo Opcional -->
+                        <div id="p_costContainer" class="mt-8 hidden bg-slate-50 border border-slate-200 p-4 rounded-xl text-center avoid-break" style="page-break-inside: avoid; break-inside: avoid;">
                             <p class="text-xs text-slate-500 font-bold uppercase tracking-widest mb-1">Inversión Total Estimada</p>
                             <p class="text-2xl font-black text-brand-dark font-mono">S/ <span id="p_propCost">0.00</span></p>
                         </div>
                     </div>
 
-                    <div class="mt-auto pt-8 flex justify-center items-end pb-4 relative z-10">
+                    <!-- Footer / Firma -->
+                    <div class="mt-auto pt-8 flex justify-center items-end pb-4 relative z-10 avoid-break" style="page-break-inside: avoid; break-inside: avoid;">
                         <div class="w-64 text-center flex flex-col items-center">
                             <img src="https://i.imgur.com/R2Wi8kr.png" alt="Firma Autorizada" class="h-24 object-contain z-10 -mb-4 drop-shadow-md">
                             <div class="border-t-2 border-gray-800 w-full pt-2 font-bold text-[13px] uppercase">José Leonaldo Vizcarra Ramirez</div>
@@ -341,19 +358,19 @@
             sync('f_attention', 'p_attention', '--------------------');
             sync('f_propTitle', 'p_propTitle', 'TÍTULO DE LA PROPUESTA');
             
+            // Cuerpo - Con protección contra cortes en saltos de página
             const bodyText = document.getElementById('f_propBody').value;
-            document.getElementById('p_propBody').innerText = bodyText || '[El contenido de tu propuesta aparecerá aquí]';
-
-            const costVal = document.getElementById('f_propCost').value;
-            const costContainer = document.getElementById('p_costContainer');
-            if (costVal && parseFloat(costVal) > 0) {
-                document.getElementById('p_propCost').innerText = parseFloat(costVal).toFixed(2);
-                costContainer.classList.remove('hidden');
+            if (bodyText) {
+                const paragraphs = bodyText.split('\n');
+                document.getElementById('p_propBody').innerHTML = paragraphs.map(p => {
+                    if (p.trim() === '') return '<div style="height: 1em;"></div>';
+                    return `<p style="page-break-inside: avoid; break-inside: avoid; margin-bottom: 0.5em;">${p}</p>`;
+                }).join('');
             } else {
-                costContainer.classList.add('hidden');
+                document.getElementById('p_propBody').innerHTML = '<p>[El contenido de tu propuesta aparecerá aquí]</p>';
             }
-            
-            window.adjustPreviewScale();
+
+            // Costo
         };
 
         window.adjustPreviewScale = () => {
@@ -394,15 +411,27 @@
 
         window.generatePDF = (btn) => {
             const wrapper = document.getElementById('proforma-pdf-wrapper');
+            const preview = document.querySelector('.a4-preview');
+            
+            // Temporalmente resetear escala para impresión
             const scaler = document.getElementById('preview-scaler');
             scaler.style.transform = 'scale(1)';
+
+            // Forzar que el tamaño del div sea un múltiplo exacto de la hoja A4 (297mm)
+            // Esto asegura que la imagen de fondo rellene toda la última página.
+            preview.style.minHeight = '297mm'; 
+            const mmToPx = preview.offsetWidth / 210;
+            const realHeightMm = preview.offsetHeight / mmToPx;
+            const pages = Math.ceil(realHeightMm / 297);
+            preview.style.minHeight = `${pages * 297}mm`;
 
             const opt = {
                 margin: 0,
                 filename: `Propuesta_KGB_${document.getElementById('f_propNumber').value}.pdf`,
                 image: { type: 'jpeg', quality: 0.98 },
                 html2canvas: { scale: 2, useCORS: true, scrollY: 0 },
-                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+                pagebreak: { mode: ['css', 'legacy'] }
             };
 
             const originalText = btn.innerHTML;
@@ -411,6 +440,7 @@
 
             html2pdf().set(opt).from(wrapper).save().then(() => {
                 btn.innerHTML = originalText;
+                preview.style.minHeight = '297mm'; // Restaurar para que fluya natural en la web
                 lucide.createIcons();
                 window.adjustPreviewScale();
             });
