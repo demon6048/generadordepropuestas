@@ -48,19 +48,6 @@
             border-radius: 4px;
         }
 
-        .a4-preview::before {
-            content: "";
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background-image: url('https://i.imgur.com/fObiYn6.png');
-            background-size: 210mm 297mm;
-            background-repeat: repeat-y;
-            background-position: top left;
-            opacity: 0.3;
-            z-index: -1;
-            border-radius: inherit;
-        }
-
         .hide-scrollbar::-webkit-scrollbar { width: 6px; }
         .hide-scrollbar::-webkit-scrollbar-track { background: transparent; }
         .hide-scrollbar::-webkit-scrollbar-thumb { background-color: #cbd5e1; border-radius: 20px; }
@@ -200,6 +187,8 @@
                 <!-- Contenedor A4 -->
                 <div id="proforma-pdf-wrapper" class="a4-preview flex flex-col transition-all duration-300">
                     
+                    <img id="web-bg" src="https://i.imgur.com/fObiYn6.png" class="absolute inset-0 w-full h-full object-cover -z-10 opacity-30 pointer-events-none">
+
                     <!-- Header Oficial -->
                     <div class="flex justify-between items-start mb-6 pb-4 border-b-2 border-brand-corp/30 relative z-10">
                         <div class="flex items-center gap-6 flex-1 min-w-0">
@@ -412,21 +401,19 @@
         window.generatePDF = (btn) => {
             const wrapper = document.getElementById('proforma-pdf-wrapper');
             const preview = document.querySelector('.a4-preview');
+            const webBg = document.getElementById('web-bg');
             
-            // Temporalmente resetear escala para impresión
+            // Preparar para impresión con márgenes perfectos
             const scaler = document.getElementById('preview-scaler');
             scaler.style.transform = 'scale(1)';
 
-            // Forzar que el tamaño del div sea un múltiplo exacto de la hoja A4 (297mm)
-            // Esto asegura que la imagen de fondo rellene toda la última página.
-            preview.style.minHeight = '297mm'; 
-            const mmToPx = preview.offsetWidth / 210;
-            const realHeightMm = preview.offsetHeight / mmToPx;
-            const pages = Math.ceil(realHeightMm / 297);
-            preview.style.minHeight = `${pages * 297}mm`;
+            if(webBg) webBg.style.display = 'none'; // Ocultar fondo web para que html2pdf no lo capture cortado
+            const originalPadding = preview.style.padding;
+            preview.style.padding = '0'; // html2pdf se encargará de los márgenes
+            preview.style.minHeight = 'auto'; // Permitir que fluya natural
 
             const opt = {
-                margin: 0,
+                margin: [25, 20, 25, 20], // top, right, bottom, left en mm (Márgenes perfectos)
                 filename: `Propuesta_KGB_${document.getElementById('f_propNumber').value}.pdf`,
                 image: { type: 'jpeg', quality: 0.98 },
                 html2canvas: { scale: 2, useCORS: true, scrollY: 0 },
@@ -436,11 +423,26 @@
 
             const originalText = btn.innerHTML;
             btn.innerHTML = '<i data-lucide="loader-2" class="w-4 h-4 animate-spin"></i> Generando...';
+            btn.disabled = true;
             lucide.createIcons();
 
-            html2pdf().set(opt).from(wrapper).save().then(() => {
+            // Usamos la promesa para inyectar el fondo en cada página generada de forma exacta
+            html2pdf().set(opt).from(wrapper).toPdf().get('pdf').then(function (pdf) {
+                const totalPages = pdf.internal.getNumberOfPages();
+                for (let i = 1; i <= totalPages; i++) {
+                    pdf.setPage(i);
+                    if (window.bgBase64) {
+                        // Inyectar el fondo a página completa (210x297mm) en cada hoja independiente
+                        pdf.addImage(window.bgBase64, 'PNG', 0, 0, 210, 297);
+                    }
+                }
+            }).save().then(() => {
+                // Restaurar vista web
+                if(webBg) webBg.style.display = 'block';
+                preview.style.padding = originalPadding;
+                preview.style.minHeight = '297mm';
                 btn.innerHTML = originalText;
-                preview.style.minHeight = '297mm'; // Restaurar para que fluya natural en la web
+                btn.disabled = false;
                 lucide.createIcons();
                 window.adjustPreviewScale();
             });
@@ -611,7 +613,26 @@
             }
         };
 
-        window.onload = window.initDefaults;
+        window.bgBase64 = null;
+        const loadBg = () => {
+            const img = new Image();
+            img.crossOrigin = 'Anonymous';
+            img.src = 'https://i.imgur.com/fObiYn6.png';
+            img.onload = () => {
+                const canvas = document.createElement('canvas');
+                canvas.width = img.width;
+                canvas.height = img.height;
+                const ctx = canvas.getContext('2d');
+                ctx.globalAlpha = 0.2; // Transparencia calculada para no tapar el texto negro
+                ctx.drawImage(img, 0, 0);
+                window.bgBase64 = canvas.toDataURL('image/png');
+            };
+        };
+
+        window.onload = () => {
+            loadBg();
+            window.initDefaults();
+        };
     </script>
 </body>
 </html>
