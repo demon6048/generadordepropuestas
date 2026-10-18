@@ -103,11 +103,10 @@
 
     <main class="flex-1 flex overflow-hidden relative bg-slate-50 flex-col lg:flex-row">
         
-        <!-- LADO IZQUIERDO: Formulario -->
         <section class="w-full lg:w-[50%] xl:w-[55%] h-full overflow-y-auto hide-scrollbar p-6 border-r border-gray-200 z-10 bg-white shadow-[10px_0_15px_-3px_rgba(0,0,0,0.02)]">
             <div class="max-w-4xl mx-auto space-y-6 pb-20">
 
-                <!-- Fila 1: Cabecera -->
+                <!-- Cabecera -->
                 <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-100 flex flex-wrap gap-4 relative overflow-hidden">
                     <div class="absolute top-0 left-0 w-1 h-full bg-brand-tech"></div>
                     <div class="flex-1 min-w-[120px]">
@@ -131,14 +130,14 @@
                     </div>
                 </div>
 
-                <!-- Fila 2: Cliente y Atención -->
+                <!-- Cliente y Atención -->
                 <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-100">
                     <h2 class="text-xs font-black text-slate-800 uppercase tracking-widest mb-4 flex items-center gap-2">
                         <div class="p-1.5 bg-slate-100 rounded-md text-brand-tech"><i data-lucide="building" class="w-4 h-4"></i></div> Destinatario
                     </h2>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div class="md:col-span-2">
-                            <label class="block text-xs font-medium text-slate-500 mb-1.5">Empresa / Cliente</label>
+                            <label class="block text-xs font-medium text-slate-500 mb-1.5">Empresa / Cliente / Junta</label>
                             <input type="text" id="f_clientName" placeholder="Ej. Municipalidad Distrital / Empresa S.A.C." class="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2.5 font-medium focus:bg-white" oninput="window.updatePreview()">
                         </div>
                         <div>
@@ -146,13 +145,12 @@
                             <input type="text" id="f_attention" placeholder="Ej. Ing. Juan Pérez" class="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2.5 font-medium focus:bg-white" oninput="window.updatePreview()">
                         </div>
                         <div>
-                            <label class="block text-xs font-medium text-slate-500 mb-1.5">Teléfono / WhatsApp</label>
+                            <label class="block text-xs font-medium text-slate-500 mb-1.5">Teléfono (Vacío para grupos)</label>
                             <input type="text" id="f_clientPhone" placeholder="Ej. 987 654 321" class="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2.5 font-medium focus:bg-white" oninput="window.updatePreview()">
                         </div>
                     </div>
                 </div>
 
-                <!-- Fila 3: Contenido de la Propuesta -->
                 <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-100">
                     <h2 class="text-xs font-black text-slate-800 uppercase tracking-widest mb-4 flex items-center gap-2">
                         <div class="p-1.5 bg-slate-100 rounded-md text-brand-accent"><i data-lucide="align-left" class="w-4 h-4"></i></div> Cuerpo de la Propuesta
@@ -182,17 +180,13 @@
             </div>
         </section>
 
-        <!-- LADO DERECHO: Vista Previa -->
         <section id="preview-wrapper-section" class="w-full lg:w-[50%] xl:w-[45%] h-full overflow-y-auto bg-slate-200 p-4 lg:p-8 flex justify-center items-start border-l border-slate-300 shadow-inner relative">
             
             <div id="preview-scaler" class="origin-top flex justify-center transition-transform duration-200 z-10 w-full" style="width: 210mm;">
                 
-                <!-- Contenedor A4 -->
                 <div id="proforma-pdf-wrapper" class="a4-preview bg-white flex flex-col transition-all duration-300">
-                    <!-- Fondo (Usando el mismo de las proformas) -->
                     <img id="p_bgImage" src="https://i.imgur.com/fObiYn6.png" alt="Fondo" class="absolute inset-0 w-full h-full object-cover -z-10 opacity-30">
                     
-                    <!-- Header Oficial -->
                     <div class="flex justify-between items-start mb-6 pb-4 border-b-2 border-brand-corp/30 relative z-10">
                         <div class="flex items-center gap-6 flex-1 min-w-0">
                             <div class="w-48 bg-transparent flex items-center justify-center shrink-0">
@@ -219,7 +213,6 @@
                         </div>
                     </div>
 
-                    <!-- Datos Destinatario -->
                     <div class="bg-white/60 backdrop-blur-sm rounded-lg p-4 mb-6 border border-slate-200/50 shadow-sm relative z-10">
                         <div class="grid grid-cols-2 gap-4 text-sm">
                             <div>
@@ -233,25 +226,21 @@
                         </div>
                     </div>
 
-                    <!-- Título -->
                     <div class="mb-6 text-center relative z-10">
                         <h3 id="p_propTitle" class="text-xl font-black text-brand-corp uppercase tracking-wide border-b-2 border-brand-tech inline-block pb-1">TÍTULO DE LA PROPUESTA</h3>
                     </div>
 
-                    <!-- Cuerpo (Expandible) -->
                     <div class="flex-1 relative z-10 mb-8">
                         <div id="p_propBody" class="text-[13px] text-gray-800 leading-relaxed text-justify whitespace-pre-wrap font-medium">
                             [El contenido de tu propuesta aparecerá aquí]
                         </div>
                         
-                        <!-- Costo Opcional -->
                         <div id="p_costContainer" class="mt-8 hidden bg-slate-50 border border-slate-200 p-4 rounded-xl text-center">
                             <p class="text-xs text-slate-500 font-bold uppercase tracking-widest mb-1">Inversión Total Estimada</p>
                             <p class="text-2xl font-black text-brand-dark font-mono">S/ <span id="p_propCost">0.00</span></p>
                         </div>
                     </div>
 
-                    <!-- Footer / Firma (Fijo al fondo si hay espacio, o empujado por el contenido) -->
                     <div class="mt-auto pt-8 flex justify-center items-end pb-4 relative z-10">
                         <div class="w-64 text-center flex flex-col items-center">
                             <img src="https://i.imgur.com/R2Wi8kr.png" alt="Firma Autorizada" class="h-24 object-contain z-10 -mb-4 drop-shadow-md">
@@ -264,8 +253,7 @@
             </div>
         </section>
 
-        <!-- Modal Historial -->
-        <div id="historyModal" class="hidden fixed inset-0 bg-brand-dark/70 backdrop-blur-sm z-50 flex items-center justify-center p-4 z-50">
+        <div id="historyModal" class="hidden fixed inset-0 bg-brand-dark/70 backdrop-blur-sm z-50 flex items-center justify-center p-4">
             <div class="bg-white w-full max-w-5xl rounded-2xl shadow-2xl flex flex-col max-h-[85vh] overflow-hidden">
                 <div class="px-6 py-4 border-b border-slate-200 flex justify-between items-center bg-slate-50">
                     <h2 class="text-lg font-black text-brand-dark flex items-center gap-2 uppercase tracking-wide">
@@ -281,15 +269,15 @@
                             <thead class="bg-slate-100 text-slate-500 text-[10px] uppercase font-black tracking-wider border-b border-slate-200">
                                 <tr>
                                     <th class="py-3 px-4">Fecha</th>
-                                    <th class="py-3 px-4">N°</th>
-                                    <th class="py-3 px-4">Cliente / Empresa</th>
+                                    <th class="py-3 px-4">N° Propuesta</th>
+                                    <th class="py-3 px-4">Destinatario</th>
                                     <th class="py-3 px-4">Título</th>
                                     <th class="py-3 px-4 text-center">Estado</th>
                                     <th class="py-3 px-4 text-center">Acción</th>
                                 </tr>
                             </thead>
                             <tbody id="dbTableBody" class="text-sm divide-y divide-slate-50">
-                                <!-- Filas dinámicas -->
+                                <!-- Tabla dinámica -->
                             </tbody>
                         </table>
                     </div>
@@ -300,9 +288,13 @@
     </main>
 
     <script>
-        // Inicialización
-        lucide.createIcons();
+        // WEBHOOK SEGURO EXCLUSIVO PARA PROPUESTAS
+        window.WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbzrve37_iJUAkYvQqVYOWYPmfopsweb4iMgbmdx7xnDf5bg47SqQUwU4DyaATfywMEMDw/exec";
 
+        lucide.createIcons();
+        window.propuestasList = JSON.parse(localStorage.getItem('propuestasList_kgb')) || [];
+
+        // Mayúsculas automáticas
         document.addEventListener('input', function(e) {
             if (e.target.tagName === 'INPUT' && e.target.type === 'text') {
                 const start = e.target.selectionStart;
@@ -318,7 +310,17 @@
             const mm = String(now.getMonth() + 1).padStart(2, '0');
             const dd = String(now.getDate()).padStart(2, '0');
             document.getElementById('f_date').value = `${yyyy}-${mm}-${dd}`;
-            document.getElementById('f_propNumber').value = '0001';
+            
+            // Auto numeración
+            let maxNum = 0;
+            if (window.propuestasList.length > 0) {
+                window.propuestasList.forEach(p => {
+                    const num = parseInt(p.propNumber, 10);
+                    if (num > maxNum) maxNum = num;
+                });
+            }
+            document.getElementById('f_propNumber').value = String(maxNum + 1).padStart(4, '0');
+            
             window.adjustPreviewScale();
         };
 
@@ -339,11 +341,9 @@
             sync('f_attention', 'p_attention', '--------------------');
             sync('f_propTitle', 'p_propTitle', 'TÍTULO DE LA PROPUESTA');
             
-            // Cuerpo
             const bodyText = document.getElementById('f_propBody').value;
             document.getElementById('p_propBody').innerText = bodyText || '[El contenido de tu propuesta aparecerá aquí]';
 
-            // Costo
             const costVal = document.getElementById('f_propCost').value;
             const costContainer = document.getElementById('p_costContainer');
             if (costVal && parseFloat(costVal) > 0) {
@@ -379,8 +379,14 @@
                 document.getElementById('f_propBody').value = '';
                 document.getElementById('f_propCost').value = '';
                 
-                let currentNum = parseInt(document.getElementById('f_propNumber').value) || 0;
-                document.getElementById('f_propNumber').value = String(currentNum + 1).padStart(4, '0');
+                let maxNum = 0;
+                if (window.propuestasList.length > 0) {
+                    window.propuestasList.forEach(p => {
+                        const num = parseInt(p.propNumber, 10);
+                        if (num > maxNum) maxNum = num;
+                    });
+                }
+                document.getElementById('f_propNumber').value = String(maxNum + 1).padStart(4, '0');
                 
                 window.updatePreview();
             }
@@ -388,8 +394,6 @@
 
         window.generatePDF = (btn) => {
             const wrapper = document.getElementById('proforma-pdf-wrapper');
-            
-            // Temporalmente resetear escala para impresión
             const scaler = document.getElementById('preview-scaler');
             scaler.style.transform = 'scale(1)';
 
@@ -414,43 +418,51 @@
 
         window.sendWhatsApp = (btn) => {
             let phoneRaw = document.getElementById('f_clientPhone').value.trim();
-            
-            // Si no hay teléfono, pedirlo con un prompt interactivo
-            if (!phoneRaw) {
-                phoneRaw = prompt("No ingresaste un teléfono. Escribe aquí el número de WhatsApp para compartir:");
-                if (!phoneRaw) return; // Si cancela
-            }
-            
             let phone = phoneRaw.replace(/\D/g, '');
             if (phone.length === 9 && phone.startsWith('9')) { phone = '51' + phone; }
 
-            const client = document.getElementById('f_clientName').value.trim() || 'Estimado(a)';
-            const title = document.getElementById('f_propTitle').value.trim() || 'Propuesta Comercial';
+            const rawClient = document.getElementById('f_clientName').value.trim();
+            const client = rawClient ? rawClient : 'Junta Directiva / Equipo';
             
-            const message = `Hola *${client}*, te saluda José Vizcarra de *KGB Distribuidores*. 👋\n\nAdjunto te enviaremos el documento PDF correspondiente a nuestra *${title}* para tu evaluación.\n\nQuedo a tu entera disposición para cualquier consulta técnica o comercial. 🤝`;
+            const rawTitle = document.getElementById('f_propTitle').value.trim();
+            const title = rawTitle ? rawTitle : 'Propuesta Comercial y Técnica';
 
-            const waUrl = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+            const templates = [
+                `Hola *${client}*, reciban un cordial saludo de José Vizcarra, Técnico Especialista de *KGB Distribuidores*. 👋\n\nAdjunto a este mensaje el documento PDF con la propuesta detallada para: *${title}*.\n\nQuedo a su entera disposición para revisar los detalles en junta y ajustar lo necesario. ¡Un excelente día! 🤝`,
+                `Estimados de *${client}*, les saluda José Vizcarra de *KGB Distribuidores*.\n\nEs un gusto compartirles nuestro documento oficial referente a: *${title}*.\n\nEstamos seguros de que esta propuesta cubrirá todas sus expectativas técnicas. Quedo atento a sus comentarios. 🚀`,
+                `Hola *${client}*, de parte de *KGB Distribuidores* (José Vizcarra) les hacemos llegar nuestra propuesta formal para *${title}*.\n\nHemos estructurado esta solución pensando en la eficiencia y calidad que requieren. Quedo a su disposición para cualquier reunión o consulta. 💡`,
+                `Saludos cordiales *${client}*.\n\nSoy José Vizcarra de *KGB Distribuidores*. Les remito el PDF con la propuesta de *${title}* para su respectiva evaluación.\n\nCuentan con mi total respaldo técnico para absolver cualquier duda. ¡Seguimos en contacto! 📊`,
+                `Hola *${client}*, un gusto saludarles. 👋\n\nLes presento nuestra propuesta comercial y técnica para: *${title}*.\n\nEn *KGB Distribuidores* estamos comprometidos con brindarles la mejor solución. Quedo a la espera de sus observaciones. 🛠️`,
+                `Estimado equipo de *${client}*, reciban el saludo de José Vizcarra (*KGB Distribuidores*).\n\nCon el objetivo de avanzar con su requerimiento, les envío la propuesta detallada de *${title}*.\n\nEstoy atento a sus canales de comunicación para afinar cualquier detalle. 📩`,
+                `Hola *${client}*, espero se encuentren muy bien.\n\nLes comparto el documento PDF con nuestra propuesta oficial: *${title}*.\n\nDesde *KGB Distribuidores* garantizamos la calidad y soporte técnico que necesitan. Quedo atento a su evaluación. ✅`,
+                `Saludos *${client}*.\n\nPara mí es un placer enviarles la estructuración técnica y económica referente a *${title}*.\n\nQuedo a su entera disposición para debatir esta propuesta y encontrar el mejor camino juntos. Atte. José Vizcarra. 🤝`,
+                `Estimados *${client}*, les escribe José Vizcarra de *KGB Distribuidores*.\n\nAdjunto nuestra solución y alcance para el proyecto de *${title}*.\n\nNuestra prioridad es ofrecerles un servicio de excelencia. Quedamos a la orden para cualquier consulta. 🌟`,
+                `Hola *${client}*, muy buen día. 👋\n\nHago entrega de la propuesta formal para *${title}* por parte de *KGB Distribuidores*.\n\nEstudiamos su requerimiento y esta es nuestra mejor alternativa técnica. ¡Quedo muy atento a su feedback! ⚙️`
+            ];
+
+            const randomIndex = Math.floor(Math.random() * templates.length);
+            const message = templates[randomIndex];
+
+            let waUrl = '';
+            if (phone) {
+                // Va directo al chat si hay número
+                waUrl = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+            } else {
+                // Si no hay número, abre el selector de contactos/grupos de WhatsApp
+                waUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(message)}`;
+            }
+            
             window.open(waUrl, '_blank');
         };
 
-        window.WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbzrve37_iJUAkYvQqVYOWYPmfopsweb4iMgbmdx7xnDf5bg47SqQUwU4DyaATfywMEMDw/exec";
-        window.propuestasList = JSON.parse(localStorage.getItem('propuestasList_kgb')) || [];
-
         window.renderHistoryTable = () => {
             const tbody = document.getElementById('dbTableBody');
-            if(!tbody) return;
             tbody.innerHTML = '';
-            
-            if (window.propuestasList.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="6" class="text-center py-8 text-slate-400 font-medium">Aún no hay propuestas guardadas.</td></tr>';
-                return;
-            }
-
             window.propuestasList.forEach(prop => {
-                let statusColors = prop.status === 'Borrador' ? "bg-slate-50 text-slate-600 border border-slate-200" : 
-                                   prop.status === 'Enviado' ? "bg-blue-50 text-blue-600 border border-blue-200" : 
+                let statusColors = prop.status === 'Borrador' ? "bg-blue-50 text-blue-600 border border-blue-200" : 
+                                   prop.status === 'Enviado' ? "bg-yellow-50 text-yellow-600 border border-yellow-200" : 
                                    "bg-emerald-50 text-emerald-600 border border-emerald-200";
-                
+
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
                     <td class="py-3 px-4 text-slate-500 font-semibold">${prop.date}</td>
@@ -474,6 +486,7 @@
             window.renderHistoryTable();
             document.getElementById('historyModal').classList.remove('hidden');
         };
+        
         window.closeHistory = () => document.getElementById('historyModal').classList.add('hidden');
         
         window.loadPropuesta = (id) => {
@@ -523,14 +536,13 @@
                     cost: document.getElementById('f_propCost').value || ''
                 };
 
-                // Enviar a tu nuevo Webhook (Google Sheets)
+                // Enviando datos a tu nuevo Google Sheets Webhook de Propuestas
                 const response = await fetch(window.WEBHOOK_URL, {
                     method: 'POST',
                     body: JSON.stringify({ action: "save_propuesta", data: dataObj })
                 });
 
                 if (response.ok) {
-                    // Guardar Localmente para visualizar rápido en Historial
                     const index = window.propuestasList.findIndex(p => p.propNumber === dataObj.propNumber);
                     if (index > -1) {
                         dataObj.id = window.propuestasList[index].id;
@@ -542,7 +554,6 @@
                     
                     btn.innerHTML = '<i data-lucide="check" class="w-4 h-4"></i> ¡Guardado!';
                     
-                    // Modificar el indicador de la nube a exitoso
                     const indicator = document.getElementById('cloudSyncIndicator');
                     indicator.innerHTML = `<i data-lucide="check-circle" class="w-3 h-3 text-emerald-500"></i> <span class="text-[10px] text-emerald-600 font-bold uppercase tracking-wider">Sincronizado a Nube</span>`;
                 } else {
