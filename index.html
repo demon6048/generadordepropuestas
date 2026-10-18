@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KGB - Generador de Propuestas</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'], },
+                    colors: {
+                        brand: {
+                            dark: '#020617',
+                            corp: '#1e1b4b',
+                            tech: '#3b82f6',
+                            light: '#8b5cf6',
+                            accent: '#06b6d4',
+                            bg: '#f8fafc',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body { background-color: #f8fafc; color: #020617; }
+        @page { size: A4 portrait; margin: 0; }
+
+        .a4-preview {
+            width: 210mm; min-width: 210mm; max-width: 210mm;
+            min-height: 297mm; height: auto;
+            background: transparent; 
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+            margin: 0; padding: 16mm; 
+            position: relative; z-index: 0;
+            flex-shrink: 0; 
+            border-radius: 4px;
+        }
+
+        .hide-scrollbar::-webkit-scrollbar { width: 6px; }
+        .hide-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .hide-scrollbar::-webkit-scrollbar-thumb { background-color: #cbd5e1; border-radius: 20px; }
+        .hide-scrollbar::-webkit-scrollbar-thumb:hover { background-color: #94a3b8; }
+
+        @media print {
+            body * { visibility: hidden; }
+            #preview-wrapper-section, #preview-wrapper-section * { visibility: visible; }
+            #preview-wrapper-section { position: absolute; left: 0; top: 0; width: 100%; margin: 0; padding: 0; background: white;}
+            .a4-preview { box-shadow: none; padding: 0; border-radius: 0; }
+            .no-print { display: none !important; }
+        }
+
+        input:focus, textarea:focus, select:focus { outline: none; border-color: #06b6d4; box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.15); transition: all 0.2s ease; }
+    </style>
+</head>
+<body class="h-screen flex flex-col overflow-hidden text-sm">
+
+    <header class="bg-white/80 backdrop-blur-md border-b border-gray-200 h-16 flex items-center px-6 justify-between shrink-0 z-40 shadow-sm relative">
+        <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-brand-corp to-brand-tech flex items-center justify-center text-white shadow-lg shadow-brand-tech/30">
+                <i data-lucide="file-text" class="w-6 h-6"></i>
+            </div>
+            <div class="flex flex-col">
+                <h1 class="font-black text-xl tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-brand-corp via-brand-tech to-brand-accent leading-none">Propuestas KGB</h1>
+                <div id="cloudSyncIndicator" class="flex items-center gap-1.5 mt-0.5 opacity-90 transition-all duration-300">
+                    <div class="w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.8)]"></div>
+                    <span class="text-[10px] text-gray-500 font-bold uppercase tracking-wider">Módulo Activo</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="flex items-center gap-2.5 flex-wrap justify-end">
+            <button onclick="window.openHistory()" class="px-3.5 py-2 bg-slate-50 hover:bg-slate-100 text-slate-700 rounded-xl transition-all duration-200 flex items-center gap-2 font-bold border border-slate-200 shadow-sm">
+                <i data-lucide="database" class="w-4 h-4"></i> BD Propuestas
+            </button>
+            <div class="hidden md:block w-px h-6 bg-gray-200 mx-1"></div>
+            
+            <button onclick="window.clearForm()" class="px-3.5 py-2 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 rounded-xl transition-all duration-200 flex items-center gap-2 font-semibold border border-indigo-200 shadow-sm">
+                <i data-lucide="file-plus" class="w-4 h-4"></i> Nueva
+            </button>
+            <button onclick="window.generatePDF(this)" class="px-4 py-2 bg-gradient-to-r from-orange-500 to-rose-500 hover:from-orange-600 hover:to-rose-600 text-white rounded-xl transition-all duration-200 flex items-center gap-2 font-bold shadow-md shadow-orange-500/20">
+                <i data-lucide="file-down" class="w-4 h-4"></i> PDF
+            </button>
+            <button onclick="window.sendWhatsApp(this)" class="px-4 py-2 bg-gradient-to-r from-[#25D366] to-[#128C7E] hover:from-[#128C7E] text-white rounded-xl transition-all duration-200 flex items-center gap-2 font-bold shadow-md shadow-green-500/20">
+                <i data-lucide="send" class="w-4 h-4"></i> WhatsApp
+            </button>
+            <button onclick="window.savePropuesta(this)" class="px-5 py-2 bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white rounded-xl transition-all duration-200 flex items-center gap-2 font-bold shadow-md shadow-emerald-500/20">
+                <i data-lucide="cloud-upload" class="w-4 h-4"></i> Guardar
+            </button>
+        </div>
+    </header>
+
+    <main class="flex-1 flex overflow-hidden relative bg-slate-50 flex-col lg:flex-row">
+        
+        <!-- LADO IZQUIERDO: Formulario -->
+        <section class="w-full lg:w-[50%] xl:w-[55%] h-full overflow-y-auto hide-scrollbar p-6 border-r border-gray-200 z-10 bg-white shadow-[10px_0_15px_-3px_rgba(0,0,0,0.02)]">
+            <div class="max-w-4xl mx-auto space-y-6 pb-20">
+
+                <!-- Fila 1: Cabecera -->
+                <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-100 flex flex-wrap gap-4 relative overflow-hidden">
+                    <div class="absolute top-0 left-0 w-1 h-full bg-brand-tech"></div>
+                    <div class="flex-1 min-w-[120px]">
+                        <label class="block text-[11px] font-bold text-slate-500 mb-1.5 uppercase tracking-wider">N° Propuesta</label>
+                        <div class="flex items-center bg-slate-50 border border-slate-200 rounded-lg px-3 py-2">
+                            <span class="text-slate-400 mr-1 font-mono font-bold">PR-</span>
+                            <input type="text" id="f_propNumber" class="w-full bg-transparent font-mono font-black text-brand-corp focus:outline-none" oninput="window.updatePreview()">
+                        </div>
+                    </div>
+                    <div class="flex-1 min-w-[120px]">
+                        <label class="block text-[11px] font-bold text-slate-500 mb-1.5 uppercase tracking-wider">Fecha</label>
+                        <input type="date" id="f_date" class="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-sm text-slate-700 font-medium focus:bg-white" onchange="window.updatePreview()">
+                    </div>
+                    <div class="flex-1 min-w-[150px]">
+                        <label class="block text-[11px] font-bold text-brand-tech mb-1.5 uppercase tracking-wider">Estado Actual</label>
+                        <select id="f_status" class="w-full bg-blue-50/50 border border-blue-200 rounded-lg px-3 py-2 text-sm text-brand-corp font-bold focus:ring-2 focus:ring-brand-tech/50 cursor-pointer">
+                            <option value="Borrador">📝 Borrador</option>
+                            <option value="Enviado">📨 Enviado</option>
+                            <option value="Aprobado">👍 Aprobado</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Fila 2: Cliente y Atención -->
+                <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-100">
+                    <h2 class="text-xs font-black text-slate-800 uppercase tracking-widest mb-4 flex items-center gap-2">
+                        <div class="p-1.5 bg-slate-100 rounded-md text-brand-tech"><i data-lucide="building" class="w-4 h-4"></i></div> Destinatario
+                    </h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="md:col-span-2">
+                            <label class="block text-xs font-medium text-slate-500 mb-1.5">Empresa / Cliente</label>
+                            <input type="text" id="f_clientName" placeholder="Ej. Municipalidad Distrital / Empresa S.A.C." class="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2.5 font-medium focus:bg-white" oninput="window.updatePreview()">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-slate-500 mb-1.5">Atención a (Contacto directo)</label>
+                            <input type="text" id="f_attention" placeholder="Ej. Ing. Juan Pérez" class="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2.5 font-medium focus:bg-white" oninput="window.updatePreview()">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-slate-500 mb-1.5">Teléfono / WhatsApp</label>
+                            <input type="text" id="f_clientPhone" placeholder="Ej. 987 654 321" class="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2.5 font-medium focus:bg-white" oninput="window.updatePreview()">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Fila 3: Contenido de la Propuesta -->
+                <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-100">
+                    <h2 class="text-xs font-black text-slate-800 uppercase tracking-widest mb-4 flex items-center gap-2">
+                        <div class="p-1.5 bg-slate-100 rounded-md text-brand-accent"><i data-lucide="align-left" class="w-4 h-4"></i></div> Cuerpo de la Propuesta
+                    </h2>
+                    
+                    <div class="mb-4">
+                        <label class="block text-xs font-bold text-slate-700 mb-1.5">Título del Proyecto / Servicio</label>
+                        <input type="text" id="f_propTitle" placeholder="Ej. Implementación de Sistema de Control de Accesos" class="w-full bg-blue-50 border border-blue-200 rounded-lg px-3 py-2.5 font-bold text-brand-corp focus:bg-white" oninput="window.updatePreview()">
+                    </div>
+
+                    <div class="mb-4 relative">
+                        <label class="block text-xs font-medium text-slate-500 mb-1.5">Redacción (Pega tu propuesta aquí)</label>
+                        <textarea id="f_propBody" rows="12" placeholder="Escribe o pega aquí el alcance, objetivos, entregables de tu propuesta..." class="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-3 font-medium focus:bg-white resize-y" oninput="window.updatePreview()"></textarea>
+                        <p class="text-[10px] text-slate-400 mt-1">Los saltos de línea se respetarán en el PDF final.</p>
+                    </div>
+
+                    <div class="p-4 bg-emerald-50 border border-emerald-200 rounded-xl">
+                        <label class="block text-xs font-bold text-emerald-700 mb-1.5">Inversión Total Acordada (Opcional)</label>
+                        <div class="relative w-full md:w-1/2">
+                            <span class="absolute left-3 top-[10px] text-emerald-500 font-bold">S/</span>
+                            <input type="number" step="0.01" id="f_propCost" placeholder="0.00" class="w-full bg-white border border-emerald-300 rounded-lg pl-8 pr-3 py-2 font-bold text-emerald-800 focus:ring-2 focus:ring-emerald-200" oninput="window.updatePreview()">
+                        </div>
+                        <p class="text-[10px] text-emerald-600 mt-1">Si la propuesta no lleva costo o es a tratar, déjalo en blanco.</p>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- LADO DERECHO: Vista Previa -->
+        <section id="preview-wrapper-section" class="w-full lg:w-[50%] xl:w-[45%] h-full overflow-y-auto bg-slate-200 p-4 lg:p-8 flex justify-center items-start border-l border-slate-300 shadow-inner relative">
+            
+            <div id="preview-scaler" class="origin-top flex justify-center transition-transform duration-200 z-10 w-full" style="width: 210mm;">
+                
+                <!-- Contenedor A4 -->
+                <div id="proforma-pdf-wrapper" class="a4-preview bg-white flex flex-col transition-all duration-300">
+                    <!-- Fondo (Usando el mismo de las proformas) -->
+                    <img id="p_bgImage" src="https://i.imgur.com/fObiYn6.png" alt="Fondo" class="absolute inset-0 w-full h-full object-cover -z-10 opacity-30">
+                    
+                    <!-- Header Oficial -->
+                    <div class="flex justify-between items-start mb-6 pb-4 border-b-2 border-brand-corp/30 relative z-10">
+                        <div class="flex items-center gap-6 flex-1 min-w-0">
+                            <div class="w-48 bg-transparent flex items-center justify-center shrink-0">
+                                <img src="https://i.imgur.com/Dla3rBv.png" alt="KGB Technology Logo" class="max-w-full max-h-20 object-contain">
+                            </div>
+                            <div class="flex-1 min-w-0 flex flex-col justify-center">
+                                <div class="text-gray-800 text-[11px] space-y-0.5 font-medium">
+                                    <p><strong class="text-gray-900">RAZÓN SOCIAL:</strong> KGB DISTRIBUIDORES</p>
+                                    <p><strong class="text-gray-900">RUC:</strong> 20600094719</p>
+                                    <p><strong class="text-gray-900">DIRECCIÓN:</strong> Jr. 2 de mayo. 477 Int 201</p>
+                                    <p><strong class="text-gray-900">E-MAIL:</strong> ramirez0072@hotmail.com</p>
+                                    <p><strong class="text-gray-900">CONTACTO:</strong> 902 532 240</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="text-right shrink-0 ml-4">
+                            <div class="bg-brand-corp text-white px-4 py-1.5 rounded-l-full -mr-16 shadow-sm">
+                                <h2 class="text-lg font-black tracking-widest uppercase">PROPUESTA</h2>
+                            </div>
+                            <div class="mt-3 pr-2">
+                                <p class="text-sm font-bold text-gray-800">N° <span class="text-brand-tech">PR-<span id="p_propNumber">0000</span></span></p>
+                                <p class="text-xs text-gray-600 mt-1 font-medium">Fecha: <span id="p_date" class="text-gray-800">00/00/0000</span></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Datos Destinatario -->
+                    <div class="bg-white/60 backdrop-blur-sm rounded-lg p-4 mb-6 border border-slate-200/50 shadow-sm relative z-10">
+                        <div class="grid grid-cols-2 gap-4 text-sm">
+                            <div>
+                                <p class="text-[10px] text-slate-500 font-bold uppercase tracking-wider mb-0.5">Dirigido a:</p>
+                                <p id="p_clientName" class="font-bold text-brand-dark uppercase">--------------------</p>
+                            </div>
+                            <div>
+                                <p class="text-[10px] text-slate-500 font-bold uppercase tracking-wider mb-0.5">Atención:</p>
+                                <p id="p_attention" class="font-bold text-brand-dark uppercase">--------------------</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Título -->
+                    <div class="mb-6 text-center relative z-10">
+                        <h3 id="p_propTitle" class="text-xl font-black text-brand-corp uppercase tracking-wide border-b-2 border-brand-tech inline-block pb-1">TÍTULO DE LA PROPUESTA</h3>
+                    </div>
+
+                    <!-- Cuerpo (Expandible) -->
+                    <div class="flex-1 relative z-10 mb-8">
+                        <div id="p_propBody" class="text-[13px] text-gray-800 leading-relaxed text-justify whitespace-pre-wrap font-medium">
+                            [El contenido de tu propuesta aparecerá aquí]
+                        </div>
+                        
+                        <!-- Costo Opcional -->
+                        <div id="p_costContainer" class="mt-8 hidden bg-slate-50 border border-slate-200 p-4 rounded-xl text-center">
+                            <p class="text-xs text-slate-500 font-bold uppercase tracking-widest mb-1">Inversión Total Estimada</p>
+                            <p class="text-2xl font-black text-brand-dark font-mono">S/ <span id="p_propCost">0.00</span></p>
+                        </div>
+                    </div>
+
+                    <!-- Footer / Firma (Fijo al fondo si hay espacio, o empujado por el contenido) -->
+                    <div class="mt-auto pt-8 flex justify-center items-end pb-4 relative z-10">
+                        <div class="w-64 text-center flex flex-col items-center">
+                            <img src="https://i.imgur.com/R2Wi8kr.png" alt="Firma Autorizada" class="h-24 object-contain z-10 -mb-4 drop-shadow-md">
+                            <div class="border-t-2 border-gray-800 w-full pt-2 font-bold text-[13px] uppercase">José Leonaldo Vizcarra Ramirez</div>
+                            <div class="text-[11px] text-gray-600 font-medium">DNI: 44865369<br>Gerente General - KGB DISTRIBUIDORES</div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- Modal Historial -->
+        <div id="historyModal" class="hidden fixed inset-0 bg-brand-dark/70 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+            <div class="bg-white w-full max-w-4xl rounded-2xl shadow-2xl flex flex-col max-h-[85vh] overflow-hidden">
+                <div class="px-6 py-4 border-b border-slate-200 flex justify-between items-center bg-slate-50">
+                    <h2 class="text-lg font-black text-brand-dark flex items-center gap-2 uppercase tracking-wide">
+                        <i data-lucide="folder-open" class="w-5 h-5 text-brand-tech"></i> Archivo de Propuestas
+                    </h2>
+                    <button onclick="window.closeHistory()" class="p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors">
+                        <i data-lucide="x" class="w-6 h-6"></i>
+                    </button>
+                </div>
+                <div class="flex-1 overflow-y-auto p-6 bg-slate-50 flex items-center justify-center">
+                    <div class="text-center">
+                        <i data-lucide="database" class="w-12 h-12 text-slate-300 mx-auto mb-3"></i>
+                        <p class="text-slate-500 font-medium">Historial conectado a Base de Datos.<br>Aparecerá aquí una vez conectado al nuevo Webhook.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        // Inicialización
+        lucide.createIcons();
+
+        document.addEventListener('input', function(e) {
+            if (e.target.tagName === 'INPUT' && e.target.type === 'text') {
+                const start = e.target.selectionStart;
+                const end = e.target.selectionEnd;
+                e.target.value = e.target.value.toUpperCase();
+                e.target.setSelectionRange(start, end);
+            }
+        });
+
+        window.initDefaults = () => {
+            const now = new Date();
+            const yyyy = now.getFullYear();
+            const mm = String(now.getMonth() + 1).padStart(2, '0');
+            const dd = String(now.getDate()).padStart(2, '0');
+            document.getElementById('f_date').value = `${yyyy}-${mm}-${dd}`;
+            document.getElementById('f_propNumber').value = '0001';
+            window.adjustPreviewScale();
+        };
+
+        window.updatePreview = () => {
+            const sync = (idFrom, idTo, fallback = '') => {
+                document.getElementById(idTo).innerText = document.getElementById(idFrom).value || fallback;
+            };
+
+            sync('f_propNumber', 'p_propNumber', '0000');
+            
+            const d = document.getElementById('f_date').value;
+            if(d) {
+                const parts = d.split('-');
+                document.getElementById('p_date').innerText = `${parts[2]}/${parts[1]}/${parts[0]}`;
+            }
+
+            sync('f_clientName', 'p_clientName', '--------------------');
+            sync('f_attention', 'p_attention', '--------------------');
+            sync('f_propTitle', 'p_propTitle', 'TÍTULO DE LA PROPUESTA');
+            
+            // Cuerpo
+            const bodyText = document.getElementById('f_propBody').value;
+            document.getElementById('p_propBody').innerText = bodyText || '[El contenido de tu propuesta aparecerá aquí]';
+
+            // Costo
+            const costVal = document.getElementById('f_propCost').value;
+            const costContainer = document.getElementById('p_costContainer');
+            if (costVal && parseFloat(costVal) > 0) {
+                document.getElementById('p_propCost').innerText = parseFloat(costVal).toFixed(2);
+                costContainer.classList.remove('hidden');
+            } else {
+                costContainer.classList.add('hidden');
+            }
+            
+            window.adjustPreviewScale();
+        };
+
+        window.adjustPreviewScale = () => {
+            const wrapper = document.getElementById('preview-wrapper-section');
+            const scaler = document.getElementById('preview-scaler');
+            if(wrapper && scaler) {
+                const availableWidth = wrapper.clientWidth - 32;
+                const a4Width = 794; 
+                let scale = availableWidth / a4Width;
+                if(scale > 1) scale = 1;
+                scaler.style.transform = `scale(${scale})`;
+            }
+        };
+
+        window.addEventListener('resize', window.adjustPreviewScale);
+
+        window.clearForm = () => {
+            if(confirm('¿Deseas crear una nueva propuesta?')) {
+                document.getElementById('f_clientName').value = '';
+                document.getElementById('f_attention').value = '';
+                document.getElementById('f_clientPhone').value = '';
+                document.getElementById('f_propTitle').value = '';
+                document.getElementById('f_propBody').value = '';
+                document.getElementById('f_propCost').value = '';
+                
+                let currentNum = parseInt(document.getElementById('f_propNumber').value) || 0;
+                document.getElementById('f_propNumber').value = String(currentNum + 1).padStart(4, '0');
+                
+                window.updatePreview();
+            }
+        };
+
+        window.generatePDF = (btn) => {
+            const wrapper = document.getElementById('proforma-pdf-wrapper');
+            
+            // Temporalmente resetear escala para impresión
+            const scaler = document.getElementById('preview-scaler');
+            scaler.style.transform = 'scale(1)';
+
+            const opt = {
+                margin: 0,
+                filename: `Propuesta_KGB_${document.getElementById('f_propNumber').value}.pdf`,
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2, useCORS: true, scrollY: 0 },
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i data-lucide="loader-2" class="w-4 h-4 animate-spin"></i> Generando...';
+            lucide.createIcons();
+
+            html2pdf().set(opt).from(wrapper).save().then(() => {
+                btn.innerHTML = originalText;
+                lucide.createIcons();
+                window.adjustPreviewScale();
+            });
+        };
+
+        window.sendWhatsApp = (btn) => {
+            let phoneRaw = document.getElementById('f_clientPhone').value.trim();
+            
+            // Si no hay teléfono, pedirlo con un prompt interactivo
+            if (!phoneRaw) {
+                phoneRaw = prompt("No ingresaste un teléfono. Escribe aquí el número de WhatsApp para compartir:");
+                if (!phoneRaw) return; // Si cancela
+            }
+            
+            let phone = phoneRaw.replace(/\D/g, '');
+            if (phone.length === 9 && phone.startsWith('9')) { phone = '51' + phone; }
+
+            const client = document.getElementById('f_clientName').value.trim() || 'Estimado(a)';
+            const title = document.getElementById('f_propTitle').value.trim() || 'Propuesta Comercial';
+            
+            const message = `Hola *${client}*, te saluda José Vizcarra de *KGB Distribuidores*. 👋\n\nAdjunto te enviaremos el documento PDF correspondiente a nuestra *${title}* para tu evaluación.\n\nQuedo a tu entera disposición para cualquier consulta técnica o comercial. 🤝`;
+
+            const waUrl = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+            window.open(waUrl, '_blank');
+        };
+
+        window.openHistory = () => document.getElementById('historyModal').classList.remove('hidden');
+        window.closeHistory = () => document.getElementById('historyModal').classList.add('hidden');
+        
+        window.savePropuesta = (btn) => {
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i data-lucide="check" class="w-4 h-4"></i> Guardado Local';
+            lucide.createIcons();
+            setTimeout(() => {
+                btn.innerHTML = originalText;
+                lucide.createIcons();
+            }, 2000);
+            // Aquí irá la lógica del Webhook cuando decidas unificar las bases de datos.
+        };
+
+        window.onload = window.initDefaults;
+    </script>
+</body>
+</html>
