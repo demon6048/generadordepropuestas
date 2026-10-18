@@ -239,15 +239,15 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div class="md:col-span-2">
                             <label class="block text-xs font-medium text-slate-500 mb-1.5">Empresa / Cliente / Junta</label>
-                            <input type="text" id="f_clientName" value="NIÑO JESUS DE PAUCARBAMBILLA" placeholder="Ej. Municipalidad Distrital / Empresa S.A.C." class="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2.5 font-medium focus:bg-white" oninput="window.updatePreview()">
+                            <input type="text" id="f_clientName" value="" placeholder="Ej. Municipalidad Distrital / Empresa S.A.C." class="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2.5 font-medium focus:bg-white" oninput="window.updatePreview()">
                         </div>
                         <div>
                             <label class="block text-xs font-medium text-slate-500 mb-1.5">Atención a (Contacto directo)</label>
-                            <input type="text" id="f_attention" value="FRANZ FERRER" placeholder="Ej. Ing. Juan Pérez" class="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2.5 font-medium focus:bg-white" oninput="window.updatePreview()">
+                            <input type="text" id="f_attention" value="" placeholder="Ej. Ing. Juan Pérez" class="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2.5 font-medium focus:bg-white" oninput="window.updatePreview()">
                         </div>
                         <div>
                             <label class="block text-xs font-medium text-slate-500 mb-1.5">Teléfono (Vacío para grupos)</label>
-                            <input type="text" id="f_clientPhone" placeholder="Ej. 987 654 321" class="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2.5 font-medium focus:bg-white" oninput="window.updatePreview()">
+                            <input type="text" id="f_clientPhone" value="" placeholder="Ej. 987 654 321" class="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2.5 font-medium focus:bg-white" oninput="window.updatePreview()">
                         </div>
                     </div>
                 </div>
@@ -260,36 +260,12 @@
                     
                     <div class="mb-4">
                         <label class="block text-xs font-bold text-slate-700 mb-1.5">Título del Proyecto / Servicio</label>
-                        <input type="text" id="f_propTitle" value="ADQUISICIÓN DEL DOMINIO WEB INSTITUCIONAL" placeholder="Ej. Implementación de Sistema de Control de Accesos" class="w-full bg-blue-50 border border-blue-200 rounded-lg px-3 py-2.5 font-bold text-brand-corp focus:bg-white" oninput="window.updatePreview()">
+                        <input type="text" id="f_propTitle" value="" placeholder="Ej. Implementación de Sistema de Control de Accesos" class="w-full bg-blue-50 border border-blue-200 rounded-lg px-3 py-2.5 font-bold text-brand-corp focus:bg-white" oninput="window.updatePreview()">
                     </div>
 
                     <div class="mb-4 relative">
                         <label class="block text-xs font-medium text-slate-500 mb-1.5">Redacción (Pega tu propuesta aquí)</label>
-                        <textarea id="f_propBody" rows="13" placeholder="Escribe o pega aquí el alcance, objetivos, entregables de tu propuesta..." class="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-3 font-medium focus:bg-white resize-y leading-relaxed" oninput="window.updatePreview()">Estimada Junta Directiva de la Cofradía Niño Jesús de Paucarbambilla,
-
-Como parte de nuestro compromiso con la proyección y el crecimiento de nuestra institución, el equipo de Imagen ha desarrollado la primera plataforma web oficial de la cofradía. Esta iniciativa tecnológica tiene como objetivo centralizar nuestra historia, actividades y gestión en un espacio moderno y a la altura de nuestra tradición.
-
-La plataforma ya se encuentra completamente construida, adaptada al 100% para dispositivos móviles y lista para operar con los siguientes módulos:
-
-• Historia y Mayordomía: El legado de nuestra cofradía y la gestión de los responsables de la festividad.
-• La Cuadrilla: Perfiles detallados y reseñas de cada uno de los integrantes de la danza.
-• Actividades: Panel informativo para la difusión de eventos y festividades.
-• Catálogo: Tienda de productos oficiales con carrito de compras integrado directamente a WhatsApp.
-• Sorteos: Plataforma hermana exclusiva dedicada a la gestión de nuestros sorteos profondos.
-• Crear Invitaciones: Una aplicación independiente y automatizada para generar invitaciones digitales de nuestros eventos.
-• En Vivo: Un mapa interactivo de Huánuco para seguir la ubicación exacta de la cuadrilla en tiempo real durante su recorrido.
-
-Toda la estructura, diseño, programación y el servidor de alojamiento ya han sido desarrollados y aportados íntegramente por KGB Technology y nuestro equipo de Imagen. Para oficializar el proyecto y abrirlo al público, el único trámite administrativo necesario es la adquisición del dominio institucional njdp.org, el cual nos acreditará globalmente como una organización formal.
-
-Detalle del Trámite Administrativo (1er Año):
-Registro de dominio (njdp.org) + resguardo por comisiones de tipo de cambio bancario: S/ 45.00
-
-Este monto cubre el registro internacional del nombre por el periodo de un año. Una vez efectuado el pago, procederemos a enlazar el sistema de inmediato.
-
-Pueden navegar y revisar el proyecto terminado en nuestro servidor de despliegue antes de su paso al dominio oficial en el siguiente enlace:
-🌐 https://njdp.vercel.app/
-
-Quedo a su disposición para coordinar el desembolso y realizar el lanzamiento oficial.</textarea>
+                        <textarea id="f_propBody" rows="13" placeholder="Escribe o pega aquí el alcance, objetivos, entregables de tu propuesta..." class="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-3 font-medium focus:bg-white resize-y leading-relaxed" oninput="window.updatePreview()"></textarea>
                     </div>
 
                     <div class="p-4 bg-emerald-50 border border-emerald-200 rounded-xl">
@@ -298,6 +274,21 @@ Quedo a su disposición para coordinar el desembolso y realizar el lanzamiento o
                             <span class="absolute left-3 top-[10px] text-emerald-500 font-bold">S/</span>
                             <input type="number" step="0.01" id="f_propCost" placeholder="Dejar vacío si ya está en el texto" class="w-full bg-white border border-emerald-300 rounded-lg pl-8 pr-3 py-2 font-bold text-emerald-800 focus:ring-2 focus:ring-emerald-200" oninput="window.updatePreview()">
                         </div>
+                    </div>
+                </div>
+
+                <!-- 🗄️ BLOQUE DE ACCESO RÁPIDO A LA BASE DE DATOS -->
+                <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200">
+                    <div class="flex justify-between items-center mb-3">
+                        <h2 class="text-xs font-black text-slate-800 uppercase tracking-widest flex items-center gap-2">
+                            <div class="p-1.5 bg-blue-50 rounded-md text-brand-tech"><i data-lucide="database" class="w-4 h-4"></i></div> Propuestas Guardadas en tu Base de Datos
+                        </h2>
+                        <button onclick="window.openHistory()" class="text-xs font-bold text-brand-tech hover:underline flex items-center gap-1">
+                            Ver tabla completa <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
+                        </button>
+                    </div>
+                    <div id="quickSavedBlocks" class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        <!-- Bloques guardados se renderizan aquí automáticamente -->
                     </div>
                 </div>
 
@@ -326,11 +317,17 @@ Quedo a su disposición para coordinar el desembolso y realizar el lanzamiento o
             <div class="bg-white w-full max-w-5xl rounded-2xl shadow-2xl flex flex-col max-h-[85vh] overflow-hidden">
                 <div class="px-6 py-4 border-b border-slate-200 flex justify-between items-center bg-slate-50">
                     <h2 class="text-lg font-black text-brand-dark flex items-center gap-2 uppercase tracking-wide">
-                        <i data-lucide="folder-open" class="w-5 h-5 text-brand-tech"></i> Archivo de Propuestas
+                        <i data-lucide="folder-open" class="w-5 h-5 text-brand-tech"></i> Archivo de Propuestas (Base de Datos)
                     </h2>
-                    <button onclick="window.closeHistory()" class="p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors">
-                        <i data-lucide="x" class="w-6 h-6"></i>
-                    </button>
+                    <div class="flex items-center gap-3">
+                        <div class="relative w-60">
+                            <i data-lucide="search" class="w-4 h-4 absolute left-3 top-2.5 text-slate-400"></i>
+                            <input type="text" id="searchHistory" oninput="window.renderHistoryTable()" placeholder="Buscar cliente o título..." class="w-full pl-9 pr-3 py-1.5 bg-white border border-slate-200 rounded-lg text-xs font-medium">
+                        </div>
+                        <button onclick="window.closeHistory()" class="p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors">
+                            <i data-lucide="x" class="w-6 h-6"></i>
+                        </button>
+                    </div>
                 </div>
                 <div class="flex-1 overflow-y-auto p-6 bg-slate-50">
                     <div class="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm">
@@ -369,18 +366,164 @@ Quedo a su disposición para coordinar el desembolso y realizar el lanzamiento o
 
     </main>
 
-    <script>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, setDoc, deleteDoc, onSnapshot, collection } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
         window.WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbzrve37_iJUAkYvQqVYOWYPmfopsweb4iMgbmdx7xnDf5bg47SqQUwU4DyaATfywMEMDw/exec";
 
         lucide.createIcons();
         window.propuestasList = [];
+        window.currentEditId = null;
+
+        // Propuesta inicial guardada por defecto para que nunca se pierda
+        const INITIAL_SAVED_PROPUESTA = {
+            id: "PR_PAUCARBAMBILLA_0001",
+            propNumber: "0001",
+            date: "2026-10-18",
+            status: "Enviado",
+            clientName: "NIÑO JESUS DE PAUCARBAMBILLA",
+            attention: "FRANZ FERRER",
+            clientPhone: "",
+            title: "ADQUISICIÓN DEL DOMINIO WEB INSTITUCIONAL",
+            body: `Estimada Junta Directiva de la Cofradía Niño Jesús de Paucarbambilla,
+
+Como parte de nuestro compromiso con la proyección y el crecimiento de nuestra institución, el equipo de Imagen ha desarrollado la primera plataforma web oficial de la cofradía. Esta iniciativa tecnológica tiene como objetivo centralizar nuestra historia, actividades y gestión en un espacio moderno y a la altura de nuestra tradición.
+
+La plataforma ya se encuentra completamente construida, adaptada al 100% para dispositivos móviles y lista para operar con los siguientes módulos:
+
+• Historia y Mayordomía: El legado de nuestra cofradía y la gestión de los responsables de la festividad.
+• La Cuadrilla: Perfiles detallados y reseñas de cada uno de los integrantes de la danza.
+• Actividades: Panel informativo para la difusión de eventos y festividades.
+• Catálogo: Tienda de productos oficiales con carrito de compras integrado directamente a WhatsApp.
+• Sorteos: Plataforma hermana exclusiva dedicada a la gestión de nuestros sorteos profondos.
+• Crear Invitaciones: Una aplicación independiente y automatizada para generar invitaciones digitales de nuestros eventos.
+• En Vivo: Un mapa interactivo de Huánuco para seguir la ubicación exacta de la cuadrilla en tiempo real durante su recorrido.
+
+Toda la estructura, diseño, programación y el servidor de alojamiento ya han sido desarrollados y aportados íntegramente por KGB Technology y nuestro equipo de Imagen. Para oficializar el proyecto y abrirlo al público, el único trámite administrativo necesario es la adquisición del dominio institucional njdp.org, el cual nos acreditará globalmente como una organización formal.
+
+Detalle del Trámite Administrativo (1er Año):
+Registro de dominio (njdp.org) + resguardo por comisiones de tipo de cambio bancario: S/ 45.00
+
+Este monto cubre el registro internacional del nombre por el periodo de un año. Una vez efectuado el pago, procederemos a enlazar el sistema de inmediato.
+
+Pueden navegar y revisar el proyecto terminado en nuestro servidor de despliegue antes de su paso al dominio oficial en el siguiente enlace:
+🌐 https://njdp.vercel.app/
+
+Quedo a su disposición para coordinar el desembolso y realizar el lanzamiento oficial.`,
+            cost: ""
+        };
+
+        // Configuración de Firebase Firestore
+        let db = null;
+        let auth = null;
+        let currentUser = null;
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'kgb-propuestas-app';
+
+        window.setCloudStatus = (status, textMsg) => {
+            const ind = document.getElementById('cloudSyncIndicator');
+            if (!ind) return;
+            if (status === 'syncing') {
+                ind.innerHTML = `<i data-lucide="refresh-cw" class="w-3 h-3 text-blue-500 animate-spin"></i> <span class="text-[10px] text-blue-600 font-bold uppercase tracking-wider">${textMsg || 'Sincronizando BD...'}</span>`;
+            } else if (status === 'success') {
+                ind.innerHTML = `<div class="w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.8)]"></div> <span class="text-[10px] text-emerald-600 font-bold uppercase tracking-wider">${textMsg || 'BD Firebase Conectada'}</span>`;
+            } else if (status === 'error') {
+                ind.innerHTML = `<i data-lucide="cloud-off" class="w-3 h-3 text-amber-500"></i> <span class="text-[10px] text-amber-600 font-bold uppercase tracking-wider">${textMsg || 'Modo Respaldo Activo'}</span>`;
+            }
+            lucide.createIcons();
+        };
+
+        const initFirebaseAndData = async () => {
+            // Cargamos inicialmente la propuesta guardada para que esté disponible de inmediato
+            window.propuestasList = [INITIAL_SAVED_PROPUESTA];
+            window.renderHistoryTable();
+            window.updateNextCorrelative();
+
+            try {
+                if (typeof __firebase_config !== 'undefined' && __firebase_config) {
+                    window.setCloudStatus('syncing', 'Conectando Firebase...');
+                    const firebaseConfig = JSON.parse(__firebase_config);
+                    const app = initializeApp(firebaseConfig);
+                    auth = getAuth(app);
+                    db = getFirestore(app);
+
+                    if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                        await signInWithCustomToken(auth, __initial_auth_token);
+                    } else {
+                        await signInAnonymously(auth);
+                    }
+
+                    onAuthStateChanged(auth, async (user) => {
+                        currentUser = user;
+                        if (!user) return;
+
+                        const colRef = collection(db, 'artifacts', appId, 'public', 'data', 'propuestas_kgb');
+                        onSnapshot(colRef, async (snapshot) => {
+                            const docs = [];
+                            snapshot.forEach(d => docs.push(d.data()));
+
+                            if (docs.length === 0) {
+                                // Si la colección en Firebase está vacía, sembramos la propuesta #0001 automáticamente
+                                try {
+                                    await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'propuestas_kgb', INITIAL_SAVED_PROPUESTA.id), INITIAL_SAVED_PROPUESTA);
+                                } catch (e) {
+                                    console.warn("Error sembrando propuesta inicial:", e);
+                                }
+                                window.propuestasList = [INITIAL_SAVED_PROPUESTA];
+                            } else {
+                                docs.sort((a, b) => (parseInt(b.propNumber, 10) || 0) - (parseInt(a.propNumber, 10) || 0));
+                                window.propuestasList = docs;
+                            }
+
+                            window.renderHistoryTable();
+                            if (!window.currentEditId) {
+                                window.updateNextCorrelative();
+                            }
+                            window.setCloudStatus('success', `BD Conectada (${window.propuestasList.length})`);
+                        }, (err) => {
+                            console.error("Error leyendo Firestore:", err);
+                            window.setCloudStatus('error', 'BD Local Activa');
+                        });
+                    });
+                } else {
+                    // Si no hay entorno Firebase, intenta leer de Google Sheets como respaldo
+                    const response = await fetch(window.WEBHOOK_URL);
+                    const data = await response.json();
+                    if (data && data.propuestas && data.propuestas.length > 0) {
+                        window.propuestasList = data.propuestas;
+                        window.renderHistoryTable();
+                        window.updateNextCorrelative();
+                    }
+                    window.setCloudStatus('success', `BD Activa (${window.propuestasList.length})`);
+                }
+            } catch (e) {
+                console.warn("Usando base de datos pre-cargada:", e);
+                window.setCloudStatus('success', `BD Activa (${window.propuestasList.length})`);
+            }
+        };
+
+        window.updateNextCorrelative = () => {
+            let maxNum = 0;
+            window.propuestasList.forEach(p => {
+                const num = parseInt(String(p.propNumber).replace(/\D/g, ''), 10) || 0;
+                if (num > maxNum) maxNum = num;
+            });
+            const nextStr = String(maxNum + 1).padStart(4, '0');
+            const inputNum = document.getElementById('f_propNumber');
+            if (inputNum && !window.currentEditId) {
+                inputNum.value = nextStr;
+                window.updatePreview();
+            }
+        };
 
         // Conversión exacta: 1 milímetro = 3.7795 píxeles (a 96 DPI estándar de A4 794x1123px)
         const MM_TO_PX = 3.7795275591;
 
-        // Mayúsculas automáticas solo en inputs de texto cortos (no en el cuerpo de la propuesta)
+        // Mayúsculas automáticas solo en inputs de texto cortos (no en el cuerpo de la propuesta ni en el buscador)
         document.addEventListener('input', function(e) {
             if (e.target.tagName === 'INPUT' && e.target.type === 'text') {
+                if (e.target.id === 'searchHistory') return;
                 const start = e.target.selectionStart;
                 const end = e.target.selectionEnd;
                 e.target.value = e.target.value.toUpperCase();
@@ -782,26 +925,19 @@ Quedo a su disposición para coordinar el desembolso y realizar el lanzamiento o
 
         window.askClearForm = () => {
             window.showConfirmModal(
-                '¿Crear nueva propuesta?',
-                'Se limpiarán los campos actuales para redactar una propuesta desde cero.',
+                '¿Crear nueva propuesta en blanco?',
+                'Se limpiarán los campos actuales para redactar una propuesta nueva desde cero.',
                 () => {
+                    window.currentEditId = null;
                     document.getElementById('f_clientName').value = '';
                     document.getElementById('f_attention').value = '';
                     document.getElementById('f_clientPhone').value = '';
                     document.getElementById('f_propTitle').value = '';
                     document.getElementById('f_propBody').value = '';
                     document.getElementById('f_propCost').value = '';
+                    document.getElementById('f_status').value = 'Borrador';
                     
-                    let maxNum = 0;
-                    if (window.propuestasList.length > 0) {
-                        window.propuestasList.forEach(p => {
-                            const num = parseInt(p.propNumber, 10);
-                            if (num > maxNum) maxNum = num;
-                        });
-                    } else {
-                        maxNum = parseInt(document.getElementById('f_propNumber').value, 10) || 0;
-                    }
-                    document.getElementById('f_propNumber').value = String(maxNum + 1).padStart(4, '0');
+                    window.updateNextCorrelative();
                     window.updatePreview();
                 }
             );
@@ -840,32 +976,74 @@ Quedo a su disposición para coordinar el desembolso y realizar el lanzamiento o
 
         window.renderHistoryTable = () => {
             const tbody = document.getElementById('dbTableBody');
+            const quickContainer = document.getElementById('quickSavedBlocks');
+            if (!tbody) return;
             tbody.innerHTML = '';
-            if (window.propuestasList.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="6" class="py-8 text-center text-slate-400 font-medium">Aún no hay propuestas guardadas en esta sesión.</td></tr>`;
-                return;
-            }
-            window.propuestasList.forEach(prop => {
-                let statusColors = prop.status === 'Borrador' ? "bg-blue-50 text-blue-600 border border-blue-200" : 
-                                   prop.status === 'Enviado' ? "bg-yellow-50 text-yellow-600 border border-yellow-200" : 
-                                   "bg-emerald-50 text-emerald-600 border border-emerald-200";
 
-                const tr = document.createElement('tr');
-                tr.innerHTML = `
-                    <td class="py-3 px-4 text-slate-500 font-semibold">${prop.date}</td>
-                    <td class="py-3 px-4 font-black text-brand-corp">PR-${prop.propNumber}</td>
-                    <td class="py-3 px-4 font-semibold text-slate-800 truncate max-w-[150px]">${prop.clientName || 'Sin nombre'}</td>
-                    <td class="py-3 px-4 text-slate-600 truncate max-w-[200px] text-xs">${prop.title || 'Sin título'}</td>
-                    <td class="py-3 px-4 text-center">
-                        <span class="text-[10px] font-bold px-2.5 py-1 rounded-md shadow-sm ${statusColors}">${prop.status}</span>
-                    </td>
-                    <td class="py-3 px-4 text-center whitespace-nowrap">
-                        <button onclick="window.loadPropuesta('${prop.id}')" title="Editar / Cargar" class="text-blue-500 hover:text-blue-700 hover:bg-blue-50 p-1.5 rounded transition-colors"><i data-lucide="edit" class="w-4 h-4"></i></button>
-                        <button onclick="window.deletePropuesta('${prop.id}')" title="Eliminar" class="text-slate-400 hover:text-red-500 hover:bg-red-50 p-1.5 rounded transition-colors"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
-                    </td>
-                `;
-                tbody.appendChild(tr);
+            const searchVal = (document.getElementById('searchHistory')?.value || '').toLowerCase();
+            const filtered = window.propuestasList.filter(p => {
+                const str = `${p.propNumber || ''} ${p.clientName || ''} ${p.title || ''} ${p.attention || ''}`.toLowerCase();
+                return str.includes(searchVal);
             });
+
+            if (filtered.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="6" class="py-8 text-center text-slate-400 font-medium">No se encontraron propuestas en la base de datos.</td></tr>`;
+            } else {
+                filtered.forEach(prop => {
+                    let statusColors = prop.status === 'Borrador' ? "bg-blue-50 text-blue-600 border border-blue-200" : 
+                                       prop.status === 'Enviado' ? "bg-yellow-50 text-yellow-600 border border-yellow-200" : 
+                                       "bg-emerald-50 text-emerald-600 border border-emerald-200";
+
+                    const tr = document.createElement('tr');
+                    tr.className = "hover:bg-slate-50/80 transition-colors";
+                    tr.innerHTML = `
+                        <td class="py-3 px-4 text-slate-500 font-semibold">${prop.date}</td>
+                        <td class="py-3 px-4 font-black text-brand-corp">PR-${prop.propNumber}</td>
+                        <td class="py-3 px-4 font-semibold text-slate-800 truncate max-w-[160px]">${prop.clientName || 'Sin nombre'}</td>
+                        <td class="py-3 px-4 text-slate-600 truncate max-w-[220px] text-xs font-medium">${prop.title || 'Sin título'}</td>
+                        <td class="py-3 px-4 text-center">
+                            <span class="text-[10px] font-bold px-2.5 py-1 rounded-md shadow-sm ${statusColors}">${prop.status}</span>
+                        </td>
+                        <td class="py-3 px-4 text-center whitespace-nowrap">
+                            <button onclick="window.loadPropuesta('${prop.id}')" title="Cargar en el editor" class="px-2.5 py-1 bg-blue-50 hover:bg-blue-100 text-brand-tech rounded-lg font-bold text-xs inline-flex items-center gap-1 mr-1 transition-colors">
+                                <i data-lucide="folder-Input" class="w-3.5 h-3.5"></i> Cargar
+                            </button>
+                            <button onclick="window.deletePropuesta('${prop.id}')" title="Eliminar" class="text-slate-400 hover:text-red-500 hover:bg-red-50 p-1.5 rounded-lg transition-colors inline-flex items-center">
+                                <i data-lucide="trash-2" class="w-4 h-4"></i>
+                            </button>
+                        </td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            }
+
+            // Renderizar también los bloques guardados debajo del formulario para acceso directo con 1 clic
+            if (quickContainer) {
+                quickContainer.innerHTML = '';
+                if (window.propuestasList.length === 0) {
+                    quickContainer.innerHTML = `<div class="col-span-2 text-center py-4 text-xs text-slate-400">Aún no hay propuestas guardadas.</div>`;
+                } else {
+                    window.propuestasList.slice(0, 6).forEach(prop => {
+                        const card = document.createElement('div');
+                        card.className = "p-3.5 rounded-xl border border-slate-200 bg-slate-50/70 hover:bg-blue-50/50 hover:border-brand-tech/40 transition-all flex justify-between items-center gap-3 group";
+                        card.innerHTML = `
+                            <div class="min-w-0 flex-1">
+                                <div class="flex items-center gap-2 mb-0.5">
+                                    <span class="text-[10px] font-black bg-brand-corp text-white px-2 py-0.5 rounded">PR-${prop.propNumber}</span>
+                                    <span class="text-[10px] text-slate-400 font-semibold">${prop.date}</span>
+                                </div>
+                                <p class="text-xs font-black text-slate-800 truncate">${prop.clientName || 'SIN DESTINATARIO'}</p>
+                                <p class="text-[11px] text-slate-500 truncate">${prop.title || 'Sin título'}</p>
+                            </div>
+                            <button onclick="window.loadPropuesta('${prop.id}')" class="shrink-0 px-3 py-2 bg-white group-hover:bg-brand-tech group-hover:text-white text-brand-corp border border-slate-200 rounded-xl text-xs font-bold shadow-sm transition-all flex items-center gap-1.5">
+                                <i data-lucide="edit-3" class="w-3.5 h-3.5"></i> Cargar
+                            </button>
+                        `;
+                        quickContainer.appendChild(card);
+                    });
+                }
+            }
+
             lucide.createIcons();
         };
 
@@ -879,22 +1057,36 @@ Quedo a su disposición para coordinar el desembolso y realizar el lanzamiento o
         window.loadPropuesta = (id) => {
             const prop = window.propuestasList.find(p => p.id === id);
             if(!prop) return;
-            document.getElementById('f_propNumber').value = prop.propNumber;
-            document.getElementById('f_date').value = prop.date;
-            document.getElementById('f_status').value = prop.status;
-            document.getElementById('f_clientName').value = prop.clientName;
-            document.getElementById('f_attention').value = prop.attention;
-            document.getElementById('f_clientPhone').value = prop.clientPhone;
-            document.getElementById('f_propTitle').value = prop.title;
-            document.getElementById('f_propBody').value = prop.body;
-            document.getElementById('f_propCost').value = prop.cost;
+            window.currentEditId = prop.id;
+            document.getElementById('f_propNumber').value = String(prop.propNumber).replace(/^PR-/i, '');
+            document.getElementById('f_date').value = prop.date || '';
+            document.getElementById('f_status').value = prop.status || 'Borrador';
+            document.getElementById('f_clientName').value = prop.clientName || '';
+            document.getElementById('f_attention').value = prop.attention || '';
+            document.getElementById('f_clientPhone').value = prop.clientPhone || '';
+            document.getElementById('f_propTitle').value = prop.title || '';
+            document.getElementById('f_propBody').value = prop.body || '';
+            document.getElementById('f_propCost').value = prop.cost || '';
             window.updatePreview();
             window.closeHistory();
         };
 
         window.deletePropuesta = (id) => {
-            window.propuestasList = window.propuestasList.filter(p => p.id !== id);
-            window.renderHistoryTable();
+            window.showConfirmModal(
+                '¿Eliminar esta propuesta?',
+                'Esta acción borrará la propuesta seleccionada de la base de datos.',
+                async () => {
+                    window.propuestasList = window.propuestasList.filter(p => p.id !== id);
+                    window.renderHistoryTable();
+                    if (db && currentUser) {
+                        try {
+                            await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'propuestas_kgb', id));
+                        } catch (e) {
+                            console.error("Error borrando en Firebase:", e);
+                        }
+                    }
+                }
+            );
         };
 
         window.savePropuesta = async (btn) => {
@@ -907,44 +1099,51 @@ Quedo a su disposición para coordinar el desembolso y realizar el lanzamiento o
                 btn.classList.add('opacity-75', 'cursor-wait');
                 lucide.createIcons();
 
+                const rawNum = (document.getElementById('f_propNumber').value || '0001').replace(/^PR-/i, '').trim();
+                const existingIndex = window.propuestasList.findIndex(p => p.id === window.currentEditId || String(p.propNumber) === rawNum);
+                const docId = window.currentEditId || (existingIndex > -1 ? window.propuestasList[existingIndex].id : ("PR_" + new Date().getTime()));
+
                 const dataObj = {
-                    id: "PR_" + new Date().getTime(),
-                    propNumber: document.getElementById('f_propNumber').value || '',
+                    id: docId,
+                    propNumber: rawNum,
                     date: document.getElementById('f_date').value || '',
-                    status: document.getElementById('f_status').value || '',
-                    clientName: document.getElementById('f_clientName').value || '',
+                    status: document.getElementById('f_status').value || 'Borrador',
+                    clientName: document.getElementById('f_clientName').value || 'SIN NOMBRE',
                     attention: document.getElementById('f_attention').value || '',
                     clientPhone: document.getElementById('f_clientPhone').value || '',
-                    title: document.getElementById('f_propTitle').value || '',
+                    title: document.getElementById('f_propTitle').value || 'SIN TÍTULO',
                     body: document.getElementById('f_propBody').value || '',
                     cost: document.getElementById('f_propCost').value || ''
                 };
 
-                const response = await fetch(window.WEBHOOK_URL, {
+                window.setCloudStatus('syncing', 'Guardando...');
+
+                // 1. Guardar en Firebase Firestore (Tiempo real)
+                if (db && currentUser) {
+                    await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'propuestas_kgb', dataObj.id), dataObj);
+                }
+
+                // 2. Actualizar lista en memoria y bloques visuales
+                if (existingIndex > -1) {
+                    window.propuestasList[existingIndex] = dataObj;
+                } else {
+                    window.propuestasList.unshift(dataObj);
+                }
+                window.currentEditId = dataObj.id;
+                window.renderHistoryTable();
+
+                // 3. Respaldo simultáneo hacia tu Google Sheets Webhook
+                fetch(window.WEBHOOK_URL, {
                     method: 'POST',
                     body: JSON.stringify({ action: "save_propuesta", data: dataObj })
-                });
+                }).catch(() => {});
 
-                if (response.ok) {
-                    const index = window.propuestasList.findIndex(p => p.propNumber === dataObj.propNumber);
-                    if (index > -1) {
-                        dataObj.id = window.propuestasList[index].id;
-                        window.propuestasList[index] = dataObj;
-                    } else {
-                        window.propuestasList.unshift(dataObj);
-                    }
-                    
-                    btn.innerHTML = '<i data-lucide="check" class="w-4 h-4"></i> ¡Guardado!';
-                    const indicator = document.getElementById('cloudSyncIndicator');
-                    indicator.innerHTML = `<i data-lucide="check-circle" class="w-3 h-3 text-emerald-500"></i> <span class="text-[10px] text-emerald-600 font-bold uppercase tracking-wider">Sincronizado a Nube</span>`;
-                } else {
-                    throw new Error("Error en la respuesta");
-                }
+                btn.innerHTML = '<i data-lucide="check" class="w-4 h-4"></i> ¡Guardado!';
+                window.setCloudStatus('success', `BD Conectada (${window.propuestasList.length})`);
             } catch (error) {
                 console.error(error);
                 btn.innerHTML = '<i data-lucide="x" class="w-4 h-4"></i> Error';
-                const indicator = document.getElementById('cloudSyncIndicator');
-                indicator.innerHTML = `<i data-lucide="cloud-off" class="w-3 h-3 text-red-500"></i> <span class="text-[10px] text-red-600 font-bold uppercase tracking-wider">Error de Red</span>`;
+                window.setCloudStatus('error', 'Error al guardar');
             } finally {
                 lucide.createIcons();
                 setTimeout(() => {
@@ -952,7 +1151,7 @@ Quedo a su disposición para coordinar el desembolso y realizar el lanzamiento o
                     btn.disabled = false;
                     btn.classList.remove('opacity-75', 'cursor-wait');
                     lucide.createIcons();
-                }, 2500);
+                }, 2200);
             }
         };
 
@@ -1012,13 +1211,14 @@ Quedo a su disposición para coordinar el desembolso y realizar el lanzamiento o
             const mm = String(now.getMonth() + 1).padStart(2, '0');
             const dd = String(now.getDate()).padStart(2, '0');
             document.getElementById('f_date').value = `${yyyy}-${mm}-${dd}`;
-            document.getElementById('f_propNumber').value = '0001';
+            document.getElementById('f_propNumber').value = '0002';
             window.updatePreview();
         };
 
         window.onload = () => {
             window.initDefaults();
             preloadAllAssets();
+            initFirebaseAndData();
         };
     </script>
 </body>
